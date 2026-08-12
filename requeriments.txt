@@ -1,0 +1,14 @@
+langgraph
+llama-index-core
+llama-index-readers-file
+llama-index-embeddings-ollama
+llama-index-vector-stores-chroma
+llama-index-llms-ollama
+chromadb
+pymupdf
+trulens
+trulens-providers-litellm
+sentence-transformers
+fastapi
+uvicorn
+pydantic
