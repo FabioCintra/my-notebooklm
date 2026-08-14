@@ -1,4 +1,6 @@
 langgraph
+langgraph-checkpoint-sqlite
+langchain-ollama
 llama-index-core
 llama-index-readers-file
 llama-index-embeddings-ollama
