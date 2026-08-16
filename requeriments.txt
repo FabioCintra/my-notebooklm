@@ -14,3 +14,4 @@ sentence-transformers
 fastapi
 uvicorn
 pydantic
+aiosqlite
