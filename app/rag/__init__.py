@@ -1,4 +1,5 @@
 import os
+from dotenv import load_dotenv
 from pathlib import Path
 
 from llama_index.core import Settings
@@ -6,11 +7,9 @@ from llama_index.core.node_parser import SentenceWindowNodeParser
 from llama_index.embeddings.ollama import OllamaEmbedding
 from llama_index.llms.ollama import Ollama
 
-from .generator_retriever import save_documents
-from .summarize import summarize_chunks
-from .window_context import create_retriever, retriever_chunks
-
 from app import get_path_folder
+
+load_dotenv()
 
 Settings.node_parser = SentenceWindowNodeParser(
     window_size=3,
@@ -36,11 +35,17 @@ rerank_llm = Ollama(
 )
 
 path_temp = get_path_folder(Path(__file__).resolve(), "app", "temp")
-path_embeddings = get_path_folder(Path(__file__).resolve(), "storage", "embeddings")
+path_embeddings = get_path_folder(Path(__file__).resolve(), "app", "storage", "embeddings")
+
+
+from .generator_retriever import save_documents, load_pdf
+from .summarize import summarize_chunks
+from .window_context import create_retriever, retriever_chunks
 
 __all__ = [
     'save_documents',
     'summarize_chunks',
     'create_retriever',
-    'retriever_chunks'
+    'retriever_chunks',
+    'load_pdf'
 ]

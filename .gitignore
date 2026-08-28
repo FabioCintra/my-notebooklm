@@ -8,3 +8,6 @@ app/exceptions/__pycache__/
 app/services/__pycache__/
 app/teste*
 *cache*
+app/storage/
+app/temp/
+

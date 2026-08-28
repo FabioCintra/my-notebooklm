@@ -1,4 +1,6 @@
 import os
+import base64
+import tempfile
 from dotenv import load_dotenv
 
 import chromadb
@@ -12,6 +14,7 @@ from pyarrow.lib import UUID
 
 from app.exceptions import NotFound
 from . import path_temp, path_embeddings
+from app.schemas.notebook_schemas.DocumentInput import DocumentInput
 
 load_dotenv()
 
@@ -29,6 +32,20 @@ def get_vector_store(thread_id:UUID) -> ChromaVectorStore:
     )
 
     return vector_store
+
+def load_pdf(document: DocumentInput):
+
+    pdf_base64 = document.base64
+    pdf_bytes = base64.b64decode(pdf_base64)
+
+    temp_file = tempfile.NamedTemporaryFile(
+        suffix=".pdf",
+        delete=False,
+        dir=path_temp
+    )
+
+    temp_file.write(pdf_bytes)
+    temp_file.close()
 
 def save_documents(thread_id: UUID):
     path: str = path_temp

@@ -1,3 +1,5 @@
+from typing import TypedDict
+
 from . import rerank_llm
 from .generator_retriever import get_vector_store
 
@@ -7,6 +9,10 @@ from llama_index.core.postprocessor import LLMRerank, MetadataReplacementPostPro
 
 from langchain_core.retrievers import BaseRetriever
 from pyarrow.lib import UUID
+
+class return_chunks(TypedDict):
+    score: float
+    content: str
 
 def create_retriever(thread_id: UUID) -> BaseRetriever:
     vector_store = get_vector_store(thread_id)
@@ -21,7 +27,7 @@ def create_retriever(thread_id: UUID) -> BaseRetriever:
 
     return retriever
 
-def retriever_chunks(retriever: BaseRetriever, question: str) -> list[str]:
+def retriever_chunks(retriever: BaseRetriever, question: str) -> list[return_chunks]:
     nodes = retriever.retrieve(question)
     query = QueryBundle(question)
 
@@ -42,7 +48,10 @@ def retriever_chunks(retriever: BaseRetriever, question: str) -> list[str]:
     )
 
     return [
-        item.node.get_content().strip()
+        {
+            "score": item.get_score(),
+            "content": item.node.get_content().strip()
+        }
         for item in nodes_reranked_with_sentence_window
         if item.node.get_content().strip()
     ]
