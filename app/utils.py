@@ -2,20 +2,21 @@ import os
 from pathlib import Path
 from .exceptions import NotFound
 
-def get_path_folder(origin_path: Path, parent_folder_name: str, new_folder_name: str) -> str:
-    path_documents_temp = origin_path
+def get_path_folder(
+    origin_path: Path,
+    parent_folder_name: str,
+    *parts: str,
+) -> str:
+    origin_path = origin_path.resolve()
 
-    folder_name = None
-    path = None
+    current = origin_path.parent if origin_path.is_file() else origin_path
 
-    for father in path_documents_temp.parents:
-        if father.name == parent_folder_name:
-            folder_name = father
-            break
-
-    if folder_name:
-        path = folder_name / new_folder_name
-        os.makedirs(path, exist_ok=True)
-        return path
-    else:
-        raise NotFound("Folder app not found!")
+    for folder in [current, *current.parents]:
+        if folder.name == parent_folder_name:
+            path = folder.joinpath(*parts)
+            os.makedirs(path, exist_ok=True)
+            return path
+        
+    raise NotFound(
+        f"Pasta '{parent_folder_name}' não encontrada."
+    )

@@ -9,7 +9,7 @@ from langchain_ollama import ChatOllama
 from langchain_core.messages import HumanMessage, SystemMessage, AIMessage
 from pyarrow.lib import UUID
 from pydantic import BaseModel
-from app.rag.rag import create_retriever, retrieve_chunks,summarize_chunks
+from app.rag import create_retriever, retriever_chunks,summarize_chunks
 
 load_dotenv()
 
@@ -114,7 +114,7 @@ def best_chunks_with_window_context(state: InternalState):
     thread_id = uuid.UUID(state["thread_id"])
 
     retriever = create_retriever(thread_id)
-    best_chunks = retrieve_chunks(retriever, question)
+    best_chunks = retriever_chunks(retriever, question)
 
     return {
         "best_chunks": best_chunks
