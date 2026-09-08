@@ -1,9 +1,8 @@
-from .generator_retriever import get_vector_store
+from app.repository import embeddings as EmbeddingsRepository
 from llama_index.core import SummaryIndex, Response
-from pyarrow.lib import UUID
 
-def summarize_chunks(thread_id: UUID, question: str) -> str:
-    vector_store = get_vector_store(thread_id)
+def summarize_chunks(thread_id: str, question: str) -> str:
+    vector_store = EmbeddingsRepository.get_vector_store(thread_id)
     nodes = vector_store.get_nodes(None)
 
     if not nodes:

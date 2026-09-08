@@ -1,21 +1,21 @@
 from typing import TypedDict
 
 from . import rerank_llm
-from .generator_retriever import get_vector_store
 
 from llama_index.core import Settings
 from llama_index.core import VectorStoreIndex, QueryBundle
 from llama_index.core.postprocessor import LLMRerank, MetadataReplacementPostProcessor
 
+from app.repository import embeddings as EmbeddingsRepository
+
 from langchain_core.retrievers import BaseRetriever
-from pyarrow.lib import UUID
 
 class return_chunks(TypedDict):
     score: float
     content: str
 
-def create_retriever(thread_id: UUID) -> BaseRetriever:
-    vector_store = get_vector_store(thread_id)
+def create_retriever(thread_id: str) -> BaseRetriever:
+    vector_store = EmbeddingsRepository.get_vector_store(thread_id)
     index = VectorStoreIndex.from_vector_store(
         vector_store=vector_store,
         embed_model=Settings.embed_model

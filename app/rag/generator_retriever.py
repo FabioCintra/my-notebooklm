@@ -1,54 +1,16 @@
 import os
-import base64
-import tempfile
-from dotenv import load_dotenv
+from pathlib import Path
 
-import chromadb
 from llama_index.core import Document, SimpleDirectoryReader
-
 from llama_index.core import Settings
 from llama_index.core.ingestion import IngestionPipeline
-from llama_index.vector_stores.chroma import ChromaVectorStore
 
-from pyarrow.lib import UUID
-
+from app import get_path_folder, delete_file_temp
 from app.exceptions import NotFound
-from . import path_temp, path_embeddings
-from app.schemas.notebook_schemas.DocumentInput import DocumentInput
+from app.repository import embeddings as EmbeddingsRepository
 
-load_dotenv()
-
-def get_vector_store(thread_id:UUID) -> ChromaVectorStore:
-    chroma_client = chromadb.PersistentClient(
-        path=path_embeddings
-    )
-
-    collection = chroma_client.get_or_create_collection(
-        name=f"rag_{thread_id}",
-    )
-
-    vector_store = ChromaVectorStore(
-        chroma_collection=collection
-    )
-
-    return vector_store
-
-def load_pdf(document: DocumentInput):
-
-    pdf_base64 = document.base64
-    pdf_bytes = base64.b64decode(pdf_base64)
-
-    temp_file = tempfile.NamedTemporaryFile(
-        suffix=".pdf",
-        delete=False,
-        dir=path_temp
-    )
-
-    temp_file.write(pdf_bytes)
-    temp_file.close()
-
-def save_documents(thread_id: UUID):
-    path: str = path_temp
+def save_documents(thread_id: str, name_notebook: str):
+    path: str = get_path_folder(Path(__file__).resolve(), "app", "temp")
 
     list_documents: list[str] = os.listdir(path)
     if not list_documents:
@@ -57,9 +19,7 @@ def save_documents(thread_id: UUID):
     documents = SimpleDirectoryReader(input_dir=path).load_data()
     merging_documents: Document = Document(text="\n\n".join([doc.text for doc in documents]))
 
-    print(f"merging_documents: {merging_documents.text}")
-
-    vector_store = get_vector_store(thread_id)
+    vector_store = EmbeddingsRepository.get_vector_store(thread_id)
 
     pipeline = IngestionPipeline(
         transformations=[
@@ -70,6 +30,9 @@ def save_documents(thread_id: UUID):
     )
 
     pipeline.run(documents=[merging_documents])
+
+    #deletando documento temporario usado para gerar seus embeddings
+    delete_file_temp()
 
 
 
