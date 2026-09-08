@@ -6,7 +6,7 @@ from llama_index.core import Settings
 from llama_index.core import VectorStoreIndex, QueryBundle
 from llama_index.core.postprocessor import LLMRerank, MetadataReplacementPostProcessor
 
-from backend.app.repository import embeddings as EmbeddingsRepository
+from app.repository import embeddings as EmbeddingsRepository
 
 from langchain_core.retrievers import BaseRetriever
 

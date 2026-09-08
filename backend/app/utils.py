@@ -4,7 +4,7 @@ import tempfile
 from pathlib import Path
 from .exceptions import NotFound
 
-from backend.app.schemas.notebook_schemas.DocumentInput import DocumentInput
+from app.schemas.notebook_schemas.DocumentInput import DocumentInput
 
 def get_path_folder(
     origin_path: Path,

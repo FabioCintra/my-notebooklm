@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from backend.app.routers import notebook
-from backend.app.routers import llm
+from app.routers import notebook
+from app.routers import llm
 
 app = FastAPI()
 

@@ -1,4 +1,4 @@
-from backend.app.repository import embeddings as EmbeddingsRepository
+from app.repository import embeddings as EmbeddingsRepository
 from llama_index.core import SummaryIndex, Response
 
 def summarize_chunks(thread_id: str, question: str) -> str:

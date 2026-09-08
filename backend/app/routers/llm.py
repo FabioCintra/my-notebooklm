@@ -3,8 +3,8 @@ from typing import Dict
 from fastapi import APIRouter, status
 from uuid import UUID
 
-from backend.app.schemas.llm import AnswerResponse, AnswerRequest
-from backend.app.services.llm import get_chat_answer
+from app.schemas.llm import AnswerResponse, AnswerRequest
+from app.services.llm import get_chat_answer
 
 router = APIRouter(
     prefix="/llms",

@@ -1,8 +1,8 @@
 from fastapi import APIRouter,status
-from backend.app.schemas.notebook_schemas.NotebookRequest import NotebookRequest
-from backend.app.schemas.notebook_schemas.NotebookResponse import NotebookResponse
-from backend.app.schemas.notebook_schemas.DocumentInput import DocumentInput
-from backend.app.services import notebook as NotebookService
+from app.schemas.notebook_schemas.NotebookRequest import NotebookRequest
+from app.schemas.notebook_schemas.NotebookResponse import NotebookResponse
+from app.schemas.notebook_schemas.DocumentInput import DocumentInput
+from app.services import notebook as NotebookService
 
 router = APIRouter(
     prefix="/notebooks",

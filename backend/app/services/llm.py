@@ -7,8 +7,8 @@ from langchain_core.messages import HumanMessage
 from langgraph.checkpoint.sqlite.aio import AsyncSqliteSaver
 from uuid import UUID
 
-from backend.app.agent import *
-from backend.app.utils import get_path_folder
+from app.agent import *
+from app.utils import get_path_folder
 
 load_dotenv()
 

@@ -1,6 +1,6 @@
 import chromadb
 from pathlib import Path
-from backend.app import get_path_folder
+from app import get_path_folder
 from llama_index.vector_stores.chroma import ChromaVectorStore
 
 PATH_EMBEDDINGS = get_path_folder(Path(__file__).resolve(), "app", "storage", "embeddings")

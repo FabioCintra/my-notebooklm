@@ -5,11 +5,11 @@ from llama_index.core import Document, SimpleDirectoryReader
 from llama_index.core import Settings
 from llama_index.core.ingestion import IngestionPipeline
 
-from backend.app import get_path_folder, delete_file_temp
-from backend.app.exceptions import NotFound
-from backend.app.repository import embeddings as EmbeddingsRepository
+from app import get_path_folder, delete_file_temp
+from app.exceptions import NotFound
+from app.repository import embeddings as EmbeddingsRepository
 
-def save_documents(thread_id: str, name_notebook: str):
+def save_documents(thread_id: str):
     path: str = get_path_folder(Path(__file__).resolve(), "app", "temp")
 
     list_documents: list[str] = os.listdir(path)

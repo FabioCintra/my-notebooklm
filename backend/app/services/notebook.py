@@ -1,11 +1,10 @@
-from pyarrow.lib import UUID
 import uuid
 
-from backend.app.schemas.notebook_schemas.DocumentInput import DocumentInput
-from backend.app.schemas.notebook_schemas.NotebookResponse import NotebookResponse
-from backend.app.rag import save_documents
-from backend.app import repository
-from backend.app import load_pdf
+from app.schemas.notebook_schemas.DocumentInput import DocumentInput
+from app.schemas.notebook_schemas.NotebookResponse import NotebookResponse
+from app.rag import save_documents
+from app import repository
+from app import load_pdf
 
 def create(documents: list[DocumentInput], name_notebook: str) -> NotebookResponse:
     for doc in documents:

@@ -1,8 +1,8 @@
 import json
 from pathlib import Path
 from . import *
-from backend.app import get_path_folder
-from backend.app.schemas.notebook_schemas.NotebookResponse import NotebookResponse as Notebook
+from app import get_path_folder
+from app.schemas.notebook_schemas.NotebookResponse import NotebookResponse as Notebook
 from . import messages as MessagesRepository
 from . import embeddings as EmbeddingsRepository
 
@@ -52,6 +52,7 @@ def save(new_notebook: Notebook):
 
 def get_all():
     return read_file()
+
 
 async def delete(thread_id: str):
     notebooks: list[Notebook] = read_file()

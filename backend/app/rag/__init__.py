@@ -7,8 +7,6 @@ from llama_index.core.node_parser import SentenceWindowNodeParser
 from llama_index.embeddings.ollama import OllamaEmbedding
 from llama_index.llms.ollama import Ollama
 
-from backend.app import get_path_folder
-
 load_dotenv()
 
 Settings.node_parser = SentenceWindowNodeParser(

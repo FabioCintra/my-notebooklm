@@ -7,9 +7,8 @@ from langgraph.graph import StateGraph, START, END
 from langgraph.graph import MessagesState
 from langchain_ollama import ChatOllama
 from langchain_core.messages import HumanMessage, SystemMessage, AIMessage
-from pyarrow.lib import UUID
 from pydantic import BaseModel
-from backend.app.rag import create_retriever, retriever_chunks,summarize_chunks
+from app.rag import create_retriever, retriever_chunks,summarize_chunks
 
 load_dotenv()
 
@@ -24,7 +23,7 @@ class InternalState(MessagesState):
     #messages
     best_chunks: list[str]
     route: Literal["no_rag", "retriever", "summary"]
-    thread_id: UUID
+    thread_id: str
 
 class OutputState(TypedDict):
     answer: str

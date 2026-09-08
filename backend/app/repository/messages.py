@@ -1,5 +1,5 @@
 from pathlib import Path
-from backend.app import get_path_folder
+from app import get_path_folder
 from langgraph.checkpoint.sqlite.aio import AsyncSqliteSaver
 
 async def delete_chat(thread_id: str):
