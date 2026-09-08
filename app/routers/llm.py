@@ -11,7 +11,7 @@ router = APIRouter(
     tags=["LLMS"]
 )
 
-@router.get("/", status_code=status.HTTP_200_OK)
+@router.post("/", status_code=status.HTTP_200_OK)
 async def answer_of_question(request: AnswerRequest) -> AnswerResponse:
     thread_id: str = str(request.thread_id)
     prompt: str = request.prompt

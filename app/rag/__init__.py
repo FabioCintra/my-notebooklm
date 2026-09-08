@@ -34,11 +34,7 @@ rerank_llm = Ollama(
     request_timeout=300.0,
 )
 
-path_temp = get_path_folder(Path(__file__).resolve(), "app", "temp")
-path_embeddings = get_path_folder(Path(__file__).resolve(), "app", "storage", "embeddings")
-
-
-from .generator_retriever import save_documents, load_pdf
+from .generator_retriever import save_documents
 from .summarize import summarize_chunks
 from .window_context import create_retriever, retriever_chunks
 
@@ -47,5 +43,4 @@ __all__ = [
     'summarize_chunks',
     'create_retriever',
     'retriever_chunks',
-    'load_pdf'
 ]
