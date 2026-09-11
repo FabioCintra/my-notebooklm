@@ -1,13 +1,60 @@
-.idea
-.venv
+# Ambientes Virtuais e Configurações de IDE
+.venv/
+.idea/
+.vscode/
+
+# Configurações locais e Credenciais (Segurança)
 .env
-app/teste.py
-__pychace__/
-app/__pycache__/
-app/exceptions/__pycache__/
-app/services/__pycache__/
-app/teste*
-*cache*
-app/storage/
-app/temp/
+.env.*
+
+# Caches do Python (Geral e em subpastas)
+__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Arquivos de Testes Locais
+backend/app/teste.py
+backend/app/teste*
+
+# Pastas de Armazenamento Local e Temporários
+backend/app/storage/
+backend/app/temp/
+
+# =========================
+# Frontend
+# =========================
+
+# Dependências
+frontend/node_modules/
+
+# Builds
+frontend/dist/
+frontend/dist-ssr/
+
+# Arquivos locais
+frontend/*.local
+
+# Logs
+frontend/logs/
+frontend/*.log
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/pnpm-debug.log*
+frontend/lerna-debug.log*
+
+# Editor / IDE
+frontend/.vscode/*
+!frontend/.vscode/extensions.json
+frontend/.idea/
+frontend/.DS_Store
+
+# Arquivos do Visual Studio
+frontend/*.suo
+frontend/*.ntvs*
+frontend/*.njsproj
+frontend/*.sln
+frontend/*.sw?
 
