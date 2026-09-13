@@ -5,14 +5,13 @@ from pathlib import Path
 from dotenv import load_dotenv
 from langchain_core.messages import HumanMessage
 from langgraph.checkpoint.sqlite.aio import AsyncSqliteSaver
-from uuid import UUID
 
 from app.agent import *
 from app.utils import get_path_folder
 
 load_dotenv()
 
-async def get_chat_answer(thread_id: UUID, prompt: str, config: Dict[str, Dict[str,str]]) -> str:
+async def get_chat_answer(thread_id: str, prompt: str, config: Dict[str, Dict[str,str]]) -> str:
 
     result: str = ""
 
@@ -27,7 +26,7 @@ async def get_chat_answer(thread_id: UUID, prompt: str, config: Dict[str, Dict[s
                 "messages": [
                     HumanMessage(content=prompt)
                 ],
-                "thread_id": str(thread_id),
+                "thread_id": thread_id,
             },
             config=config
         )

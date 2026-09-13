@@ -1,7 +1,6 @@
 from typing import Dict
 
 from fastapi import APIRouter, status
-from uuid import UUID
 
 from app.schemas.llm import AnswerResponse, AnswerRequest
 from app.services.llm import get_chat_answer

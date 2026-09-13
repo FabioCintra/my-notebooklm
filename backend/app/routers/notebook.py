@@ -2,6 +2,7 @@ from fastapi import APIRouter,status
 from app.schemas.notebook_schemas.NotebookRequest import NotebookRequest
 from app.schemas.notebook_schemas.NotebookResponse import NotebookResponse
 from app.schemas.notebook_schemas.DocumentInput import DocumentInput
+from app.schemas.ChatResponse import ChatResponse
 from app.services import notebook as NotebookService
 
 router = APIRouter(
@@ -25,3 +26,8 @@ def get_all_notebooks():
 @router.delete("/", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_notebook(thread_id: str):
     await NotebookService.delete_notebook(thread_id)
+
+@router.get("/messages/{thread_id}", status_code=status.HTTP_200_OK)
+async def notebook_messages(thread_id: str) -> list[ChatResponse]:
+    messages: list[ChatResponse] = await NotebookService.messages_chat(thread_id)
+    return messages

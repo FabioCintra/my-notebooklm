@@ -171,7 +171,16 @@ def generate_answer(state: InternalState):
     result: str = llm.invoke([SystemMessage(content=system_prompt), HumanMessage(content=prompt)])
 
     return {
-        "answer": result.content
+        "messages": [
+            AIMessage(content=result.content)
+        ]
+    }
+
+def final_node(state: InternalState):
+    answer = state["messages"][-1].content
+
+    return {
+        "answer": answer
     }
 
 def generate_graph(memory):
@@ -181,12 +190,14 @@ def generate_graph(memory):
     builder.add_node("best_chunks_summarized",best_chunks_summarized)
     builder.add_node("best_chunks_with_window_context",best_chunks_with_window_context)
     builder.add_node("generate_answer",generate_answer)
+    builder.add_node("final_node", final_node)
 
     builder.add_edge(START, "check_prompt")
     builder.add_conditional_edges("check_prompt",route_node)
     builder.add_edge("best_chunks_summarized","generate_answer")
     builder.add_edge("best_chunks_with_window_context","generate_answer")
-    builder.add_edge("generate_answer",END)
+    builder.add_edge("generate_answer","final_node")
+    builder.add_edge("final_node", END)
 
     return builder.compile(checkpointer=memory)
 

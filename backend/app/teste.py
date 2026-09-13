@@ -1,7 +1,6 @@
 import os
 import asyncio
 
-from . import path_state_db
 from langchain_core.messages import HumanMessage
 from langgraph.checkpoint.sqlite.aio import AsyncSqliteSaver
 
@@ -9,7 +8,7 @@ from .agent import generate_graph
 
 config = {
     "configurable": {
-        "thread_id": "834afa3a-cea2-486e-a2b3-c9ddbbaf529c"
+        "thread_id": "1c7a18cb-daea-43bb-a7d2-12d30dbe3fb9"
     }
 }
 
@@ -47,9 +46,9 @@ async def main():
         result = await graph.ainvoke(
             input={
                 "messages": [
-                    HumanMessage(content="Como o feedback de usuários finais e comunidades impactadas pode influenciar a medição e o gerenciamento de riscos?")
+                    HumanMessage(content="O que é Retrieval-Augmented Generation, ou RAG?")
                 ],
-                "thread_id": "321ee9a2-712b-4713-b080-946f0aced419"
+                "thread_id": "1c7a18cb-daea-43bb-a7d2-12d30dbe3fb9"
             },
             config=config
         )
