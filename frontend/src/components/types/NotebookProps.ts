@@ -1,5 +1,5 @@
 export type NotebookProps = {
-    name: string,
-    id: string
+    name_notebook: string,
+    thread_id: string
 }
 

@@ -1,21 +1,37 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState} from "react";
 
 import Notebook from "./Notebook";
 import type { NotebookProps } from "../types/NotebookProps";
+import { ChatContext } from "../../store/ChatContext";
 
 export default function Sidebar(){
 
+    const chatCtx = useContext(ChatContext)
     const [notebooks, setNotebooks] = useState<NotebookProps[]>([])
 
-    function handleNotebooks(notebooks: NotebookProps[] | NotebookProps){
-        setNotebooks(oldNotebooks => {
-            if (Array.isArray(notebooks)){
-                return notebooks
-            }
+    useEffect(() => {
+        async function fecthAllNootebooks(){
 
+            const response = await fetch("http://127.0.0.1:8000/notebooks/",
+                {
+                    method: "GET",
+                    credentials: "include"
+                }
+            )
+            const notebooks: NotebookProps[] = await response.json()
+            console.log(notebooks)
+            setNotebooks(notebooks)
+        }
+
+        fecthAllNootebooks()
+
+    }, [])
+
+    function addNotebook(notebook: NotebookProps){
+        setNotebooks(oldNotebooks => {
             return [
                 ...oldNotebooks,
-                notebooks
+                notebook
             ]
         })
     }
@@ -46,9 +62,9 @@ export default function Sidebar(){
             <div className="mt-3 -mx-2 flex flex-col gap-1 overflow-y-auto">
                 {notebooks.map(note => (
                     <Notebook
-                        key={note.id}
-                        name={note.name}
-                        id={note.id}
+                        key={note.thread_id}
+                        name_notebook={note.name_notebook}
+                        thread_id={note.thread_id}
                     />
                 ))}
             </div>
