@@ -20,8 +20,6 @@ export default function ChatContextProvider({children}: any) {
                 return;
             }
 
-            console.log(id)
-
             const url = "http://127.0.0.1:8000/notebooks/messages/" + id;
             const json = await fetch(url,
                 {

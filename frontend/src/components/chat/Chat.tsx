@@ -12,8 +12,6 @@ export default function Chat(){
 
         function showMessages(){
 
-            console.log(id)
-
             if (id != ""){
                 setnotebookSelected(true)
             }

@@ -49,7 +49,6 @@ def retriever_chunks(retriever: BaseRetriever, question: str) -> list[return_chu
 
     return [
         {
-            "score": item.get_score(),
             "content": item.node.get_content().strip()
         }
         for item in nodes_reranked_with_sentence_window

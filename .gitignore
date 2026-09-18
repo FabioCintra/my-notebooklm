@@ -15,8 +15,7 @@ __pycache__/
 *.pyd
 
 # Arquivos de Testes Locais
-backend/app/teste.py
-backend/app/teste*
+backend/app/tests/
 
 # Pastas de Armazenamento Local e Temporários
 backend/app/storage/

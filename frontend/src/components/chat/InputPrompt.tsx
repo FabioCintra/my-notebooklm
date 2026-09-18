@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import type { MessageRequest } from "../types/MessageRequest";
 import type { MessageResponse } from "../types/MessageResponse";
 import type { ChatMessages } from "../types/ChatMessages";
-import type { InputPromptProps } from "../types/InputPromptProps";
+import type { InputPromptProps } from "../types/props/InputPromptProps";
 
 export default function InputPrompt({thread_id, addMessage}: InputPromptProps){
     
@@ -10,6 +10,10 @@ export default function InputPrompt({thread_id, addMessage}: InputPromptProps){
     const [isGenerating, setIsGenerating] = useState(false);
 
     const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+    useEffect( () => {
+        setPrompt("")
+    }, [thread_id])
 
     useEffect(() => {
         const textarea = textareaRef.current;
@@ -28,7 +32,7 @@ export default function InputPrompt({thread_id, addMessage}: InputPromptProps){
         setIsGenerating(true);
 
         try {
-            const body :MessageRequest = {
+            const body: MessageRequest = {
                 thread_id: thread_id,
                 prompt: prompt
             }

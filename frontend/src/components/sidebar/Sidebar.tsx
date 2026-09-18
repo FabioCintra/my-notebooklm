@@ -1,13 +1,13 @@
-import { useContext, useEffect, useState} from "react";
+import { useEffect, useState} from "react";
 
 import Notebook from "./Notebook";
-import type { NotebookProps } from "../types/NotebookProps";
-import { ChatContext } from "../../store/ChatContext";
+import type { NotebookProps } from "../types/props/NotebookProps";
+import CreateNotebookArea from "./CreateNotebookArea";
 
 export default function Sidebar(){
 
-    const chatCtx = useContext(ChatContext)
     const [notebooks, setNotebooks] = useState<NotebookProps[]>([])
+    const [showCreateNotebook, setShowCreateNotebook] = useState(false)
 
     useEffect(() => {
         async function fecthAllNootebooks(){
@@ -19,7 +19,7 @@ export default function Sidebar(){
                 }
             )
             const notebooks: NotebookProps[] = await response.json()
-            console.log(notebooks)
+     
             setNotebooks(notebooks)
         }
 
@@ -40,6 +40,14 @@ export default function Sidebar(){
         <div className="flex h-screen w-64 flex-col border-r border-gray-200 bg-white p-3">
 
             <div className="flex items-center justify-between">
+
+                {showCreateNotebook && (
+                    <CreateNotebookArea
+                        addNotebook={addNotebook}
+                        onClose={() => setShowCreateNotebook(false)}
+                    />
+                )}
+
                  <h4 className="text-lg font-semibold tracking-tight text-gray-900">
                     Notebooks
                 </h4>
@@ -54,6 +62,7 @@ export default function Sidebar(){
                         transition-colors
                         hover:bg-gray-200
                     "
+                    onClick={() => setShowCreateNotebook(true)}
                 >
                     +
                 </button>

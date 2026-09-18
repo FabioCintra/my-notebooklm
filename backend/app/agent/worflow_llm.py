@@ -52,35 +52,85 @@ def check_prompt(state: InternalState):
     context = "\n\n".join(message.content for message in state["messages"][-10:-1])
 
     prompt = f"""
-        You are a query router.
-        
+        You are a router for a document-grounded question answering system.
+
         Conversation context:
         {context}
-        
+
         User question:
         {question}
-        
-        Classify the question into exactly ONE of these categories:
-        
+
+        Choose exactly one route:
+
         - "summary":
-          Use when the user asks for a summary, overview, synthesis, main points,
-          or a broad explanation of the provided documents.
-        
+        Use when the user explicitly asks to summarize, synthesize,
+        give an overview, list the main points, or broadly explain
+        the documents/content.
+
         - "retriever":
-          Use when the user asks for specific information that must be found
-          in the provided documents.
-        
+        Use for ANY informational or knowledge question whose answer
+        should be grounded in the user's documents.
+
+        This includes:
+        - "What is X?"
+        - "What does X mean?"
+        - "How does X work?"
+        - "Why does X happen?"
+        - "Explain X"
+        - comparisons
+        - definitions
+        - factual questions
+        - conceptual questions
+        - questions about a specific topic
+
+        IMPORTANT:
+        The fact that you already know the answer from your pretrained
+        knowledge is IRRELEVANT. This system must prefer the documents.
+
         - "no_rag":
-          Use when the question can be answered without consulting the documents,
-          such as greetings, casual conversation, or questions already answerable
-          from the conversation context.
-        
+        Use ONLY for messages that do not require document knowledge.
+
+        Examples:
+        - "hello"
+        - "good morning"
+        - "thank you"
+        - "what is my name?" when the name was explicitly stated
+        in the conversation
+        - casual conversation
+        - questions about the conversation itself
+
+        Examples:
+
+        User: "O que é Retrieval-Augmented Generation, ou RAG?"
+        Route: retriever
+
+        User: "O que é inteligência artificial?"
+        Route: retriever
+
+        User: "Como funciona RAG?"
+        Route: retriever
+
+        User: "Qual a diferença entre RAG e fine-tuning?"
+        Route: retriever
+
+        User: "Resuma os documentos."
+        Route: summary
+
+        User: "Quais são os principais pontos do material?"
+        Route: summary
+
+        User: "Olá!"
+        Route: no_rag
+
+        User: "Obrigado."
+        Route: no_rag
+
         Rules:
-        - Use only the provided conversation context and the user question to classify.
-        - Do not invent information.
-        - Do not answer the user's question.
-        - Return only one of these exact values:
-          "summary", "retriever", or "no_rag".
+        - NEVER choose no_rag simply because you know the answer.
+        - Informational questions default to retriever.
+        - If uncertain between retriever and no_rag, choose retriever.
+        - Do not answer the question.
+        - Only classify it.
     """
     response = route_llm.invoke([HumanMessage(content=prompt)])
 
@@ -122,11 +172,6 @@ def best_chunks_with_window_context(state: InternalState):
 def generate_answer(state: InternalState):
     last_message = state["messages"][-1].content
 
-    if state["route"] == "summary":
-        return {
-            "answer": last_message
-        }
-
     context = "\n\n".join(message.content for message in state["messages"][-10:-1])
 
     system_prompt = """
@@ -156,10 +201,15 @@ def generate_answer(state: InternalState):
     if state["route"] == "retriever":
         best_chunks = state["best_chunks"]
 
+        documents_context = "\n\n".join(
+            chunk["content"]
+            for chunk in best_chunks
+        )
+
         prompt += f"""
         
             Relevant information retrieved from the user's documents:
-            {best_chunks}
+            {documents_context}
             
             Use this retrieved information as the primary source for answering the user's message.
         """
@@ -194,7 +244,7 @@ def generate_graph(memory):
 
     builder.add_edge(START, "check_prompt")
     builder.add_conditional_edges("check_prompt",route_node)
-    builder.add_edge("best_chunks_summarized","generate_answer")
+    builder.add_edge("best_chunks_summarized","final_node")
     builder.add_edge("best_chunks_with_window_context","generate_answer")
     builder.add_edge("generate_answer","final_node")
     builder.add_edge("final_node", END)

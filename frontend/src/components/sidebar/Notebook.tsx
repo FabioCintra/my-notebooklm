@@ -1,4 +1,4 @@
-import type { NotebookProps } from "../types/NotebookProps.ts";
+import type { NotebookProps } from "../types/props/NotebookProps.ts";
 import { useContext } from "react";
 import { ChatContext } from "../../store/ChatContext.tsx";
 

@@ -32,12 +32,29 @@ async def delete_notebook(thread_id: str):
 
 async def messages_chat(thread_id: str) -> list[ChatResponse]:
     messages = await MessageRepository.messages_chat(thread_id)
-    messages_formated = [
-        ChatResponse(
-            identifier=     "Human" if isinstance(m, HumanMessage) else "AI", 
-            message= m.content
+    messages_formated = []
+
+    for m in messages:
+        if not isinstance(m.content, str):
+            continue
+
+        if not m.content.strip():
+            continue
+
+        if isinstance(m, HumanMessage):
+            identifier = "Human"
+
+        elif isinstance(m, AIMessage):
+            identifier = "AI"
+
+        else:
+            continue
+
+        messages_formated.append(
+            ChatResponse(
+                identifier=identifier,
+                message=m.content
+            )
         )
-        for m in messages
-    ]
 
     return messages_formated

@@ -20,6 +20,9 @@ async def messages_chat(thread_id: str):
 
         result = await memory.aget(config)
 
+        if result is None:
+            return []
+
         messages = result["channel_values"]["messages"]
 
         return messages
